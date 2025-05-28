@@ -1,35 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
+import useAnimatedPlaceholder from '../../hooks/useAnimatedPlaceholder';
 import './styles.css';
-
-
-const placeholders = [
-  'Give me a debate between Alex Epstein and Greta Thunberg on net-zero energy',
-  'Show me talking points on climate change from both liberal and conservative perspectives',
-  'Provide key arguments for and against nuclear energy',
-  'What are the main points in the debate about universal healthcare?',
-  'Give me talking points on artificial intelligence regulation'
-];
 
 
 const AnimatedTextarea = () => {
   const [value, setValue] = useState('');
-  const [placeholderIndex, setPlaceholderIndex] = useState(0);
-  const [displayText, setDisplayText] = useState('');
-  const [isTyping, setIsTyping] = useState(true);
-  const [currentPlaceholder, setCurrentPlaceholder] = useState(placeholders[0]);
   const [isFocused, setIsFocused] = useState(false);
   const textareaRef = useRef(null);
+  const { displayText, resetAnimation, isAnimating } = useAnimatedPlaceholder({ isInputEmpty: !value, isFocused });
 
-  const handleTextChange = (e) => {
-    setValue(e.target.value);
-  };
-  
   const onSubmit = (text) => {
-    alert('Processing request: ' + text);
+    alert(text);
     setValue('');
   };
 
-  
   // Auto resize the textarea based on content
   const adjustHeight = () => {
     const textarea = textareaRef.current;
@@ -41,50 +25,17 @@ const AnimatedTextarea = () => {
     }
   };
 
+  // Initialize height adjustment when component mounts
+  useEffect(() => {
+    adjustHeight();
+  }, []);
+
   // Handle auto-resizing when content changes
   useEffect(() => {
     if (value) {
       adjustHeight();
     }
   }, [value]);
-
-  // Initialize height adjustment when component mounts
-  useEffect(() => {
-    adjustHeight();
-  }, []);
-  
-  // Manage the typing and deleting animation
-  useEffect(() => {
-    if (!value && !isFocused) { // Only animate when textarea is empty and not focused
-      let timeout;
-      
-      if (isTyping) {
-        if (displayText.length < currentPlaceholder.length) {
-          timeout = setTimeout(() => {
-            setDisplayText(currentPlaceholder.substring(0, displayText.length + 1));
-          }, 100); // Typing speed
-        } else {
-          timeout = setTimeout(() => {
-            setIsTyping(false);
-          }, 2000); // Pause at the end of typing
-        }
-      } else {
-        if (displayText.length > 0) {
-          timeout = setTimeout(() => {
-            setDisplayText(displayText.substring(0, displayText.length - 1));
-          }, 50); // Deleting speed (faster than typing)
-        } else {
-          // Move to the next placeholder
-          const nextIndex = (placeholderIndex + 1) % placeholders.length;
-          setPlaceholderIndex(nextIndex);
-          setCurrentPlaceholder(placeholders[nextIndex]);
-          setIsTyping(true);
-        }
-      }
-      
-      return () => clearTimeout(timeout);
-    }
-  }, [displayText, isTyping, currentPlaceholder, placeholderIndex, placeholders, value]);
 
   // Focus handler to highlight text on click and hide placeholder
   const handleFocus = () => {
@@ -97,15 +48,7 @@ const AnimatedTextarea = () => {
   // Blur handler to show placeholder when textarea loses focus and is empty
   const handleBlur = () => {
     setIsFocused(false);
-    
-    // Reset the animation to start from the beginning
-    if (!value) {
-      setDisplayText('');
-      setIsTyping(true);
-      // Optionally reset to the first placeholder or choose a random one
-      setPlaceholderIndex(0); 
-      setCurrentPlaceholder(placeholders[0]);
-    }
+    resetAnimation();
   };
 
   // Handle keyboard events - Enter to submit, Shift+Enter for newline
@@ -129,7 +72,7 @@ const AnimatedTextarea = () => {
       <textarea
         ref={textareaRef}
         value={value}
-        onChange={handleTextChange}
+        onChange={(e) => setValue(e.target.value)}
         className="animated-textarea"
         rows={5}
         placeholder=""
@@ -137,7 +80,7 @@ const AnimatedTextarea = () => {
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
       />
-      {!value && !isFocused && (
+      {isAnimating && (
         <div className="placeholder-text">
           {displayText}
           <span className="cursor-blink"></span>
