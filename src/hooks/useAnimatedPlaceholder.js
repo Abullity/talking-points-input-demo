@@ -49,10 +49,14 @@ const useAnimatedPlaceholder = ({
             setDisplayText(displayText.substring(0, displayText.length - 1));
           }, 50); // Deleting speed (faster than typing)
         } else {
-          // Move to the next placeholder
-          const nextIndex = (placeholderIndex + 1) % placeholders.length;
-          setPlaceholderIndex(nextIndex);
-          setCurrentPlaceholder(placeholders[nextIndex]);
+          // Choose a random placeholder that's different from the current one
+          let randomIndex;
+          do {
+            randomIndex = Math.floor(Math.random() * placeholders.length);
+          } while (randomIndex === placeholderIndex && placeholders.length > 1);
+          
+          setPlaceholderIndex(randomIndex);
+          setCurrentPlaceholder(placeholders[randomIndex]);
           setIsTyping(true);
         }
       }
@@ -68,8 +72,11 @@ const useAnimatedPlaceholder = ({
     if (isInputEmpty) {
       setDisplayText('');
       setIsTyping(true);
-      setPlaceholderIndex(0); 
-      setCurrentPlaceholder(placeholders[0]);
+      
+      // Choose a random placeholder for the reset
+      const randomIndex = Math.floor(Math.random() * placeholders.length);
+      setPlaceholderIndex(randomIndex);
+      setCurrentPlaceholder(placeholders[randomIndex]);
     }
   };
 

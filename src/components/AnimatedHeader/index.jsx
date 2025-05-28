@@ -13,7 +13,7 @@ const topics = [
 
 
 const AnimatedHeader = () => {
-  const [currentTopic, setCurrentTopic] = useState(topics[0]);
+  const [currentTopic, setCurrentTopic] = useState(topics[Math.floor(Math.random() * topics.length)]);
   const [nextTopic, setNextTopic] = useState('');
   const [isChanging, setIsChanging] = useState(false);
   
