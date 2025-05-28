@@ -1,5 +1,5 @@
 import AnimatedHeader from './components/AnimatedHeader';
-import AnimatedTextarea from './components/AnimatedTextarea';
+import AnimatedInput from './components/AnimatedInput';
 import './App.css';
 
 
@@ -9,9 +9,8 @@ function App() {
       <div className="hero-banner">
         <AnimatedHeader />
         <p className="subheadline">The best, fact-checked, stress-tested talking points on every issue</p>
-        
         <div className="input-section">
-          <AnimatedTextarea />
+          <AnimatedInput />
         </div>
       </div>
     </div>

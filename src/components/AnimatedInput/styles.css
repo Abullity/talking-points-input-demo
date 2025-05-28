@@ -1,11 +1,11 @@
 /* AnimatedTextarea styles that match the app theme */
-.animated-textarea-container {
+.input-container {
   position: relative;
   width: 100%;
   margin: 1.5rem 0;
 }
 
-.animated-textarea {
+.input {
   width: 100%;
   padding: 1rem;
   font-family: 'Merriweather', serif;
@@ -14,14 +14,17 @@
   border: 2px solid #8b6b4c;
   border-radius: 8px;
   background-color: rgba(255, 255, 255, 0.8);
-  resize: none; /* Disable manual resizing since we're doing it programmatically */
-  overflow-y: hidden; /* Hide scrollbar */
-  min-height: 60px; /* Set a minimum height */
+  min-height: 120px; /* Set a minimum height */
+  max-height: 300px; /* Set maximum height */
+  overflow-y: auto; /* Allow scrolling when content exceeds max height */
   box-sizing: border-box;
-  transition: border-color 0.3s, box-shadow 0.3s, height 0.2s ease;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  white-space: pre-wrap; /* Preserve line breaks */
+  word-break: break-word; /* Break words when necessary */
+  line-height: 1.5; /* Improve readability */
 }
 
-.animated-textarea:focus {
+.input:focus {
   outline: none;
   border-color: #5c4433;
   box-shadow: 0 0 0 2px rgba(92, 68, 51, 0.2);
@@ -59,7 +62,7 @@
 
 /* Responsive styles */
 @media (max-width: 768px) {
-  .animated-textarea,
+  .input,
   .placeholder-text {
     font-size: 14px;
   }
