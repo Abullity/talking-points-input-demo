@@ -1,12 +1,5 @@
 import { useState, useEffect } from 'react';
-
-const defaultPlaceholders = [
-  'Give me a debate between Alex Epstein and Greta Thunberg on net-zero energy',
-  'Show me talking points on climate change from both liberal and conservative perspectives',
-  'Provide key arguments for and against nuclear energy',
-  'What are the main points in the debate about universal healthcare?',
-  'Give me talking points on artificial intelligence regulation'
-];
+import { inputPlaceholders } from '../config';
 
 /**
  * Custom hook for creating animated placeholder text that cycles through examples
@@ -19,7 +12,7 @@ const defaultPlaceholders = [
  * @returns {Object} States and values for the animated placeholder
  */
 const useAnimatedPlaceholder = ({
-  placeholders = defaultPlaceholders,
+  placeholders = inputPlaceholders,
   isInputEmpty = true,
   isFocused = false
 }) => {

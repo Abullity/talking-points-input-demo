@@ -1,17 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import useAnimatedPlaceholder from '../../hooks/useAnimatedPlaceholder';
 import useDebounce from '../../hooks/useDebounce';
-import AgentChip from './AgentChip';
+import { agents } from '../../config';
 import './styles.css';
 
-// List of names to detect and convert to agent chips
-const agentNames = [
-  'Donald Trump',
-  'Greta Thunberg',
-  'Elon Musk',
-  'Alex Epstein',
-  'Joe Biden'
-];
 
 const AnimatedInput = () => {  
   const [value, setValue] = useState('');
@@ -66,14 +58,14 @@ const AnimatedInput = () => {
       const text = textNode.nodeValue;
       
       // Check for agent names in the text
-      agentNames.forEach(name => {
-        const regex = new RegExp(`\\b${name}\\b`, 'i'); // Case insensitive search with word boundaries
+      Object.values(agents).forEach(agent => {
+        const regex = new RegExp(`\\b${agent.name}\\b`, 'i'); // Case insensitive search with word boundaries
         if (regex.test(text)) {
           // Create range to replace the text
           const range = document.createRange();
-          const startOffset = text.toLowerCase().indexOf(name.toLowerCase());
+          const startOffset = text.toLowerCase().indexOf(agent.name.toLowerCase());
           range.setStart(textNode, startOffset);
-          range.setEnd(textNode, startOffset + name.length);
+          range.setEnd(textNode, startOffset + agent.name.length);
           
           // Create the agent chip element
           const span = document.createElement('span');

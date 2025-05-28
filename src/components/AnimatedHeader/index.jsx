@@ -1,15 +1,6 @@
 import { useState, useEffect } from 'react';
+import { topics } from '../../config';
 import './styles.css';
-
-const topics = [
-  'Vaccines',
-  'Maga',
-  'Climate Change',
-  'Immigration',
-  'China',
-  'Israel',
-  'Gun Control'
-];
 
 
 const AnimatedHeader = () => {
