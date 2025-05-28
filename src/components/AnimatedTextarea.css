@@ -1,0 +1,66 @@
+/* AnimatedTextarea styles that match the app theme */
+.animated-textarea-container {
+  position: relative;
+  width: 100%;
+  margin: 1.5rem 0;
+}
+
+.animated-textarea {
+  width: 100%;
+  padding: 1rem;
+  font-family: 'Merriweather', serif;
+  font-size: 16px;
+  color: #3c2415;
+  border: 2px solid #8b6b4c;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.8);
+  resize: none; /* Disable manual resizing since we're doing it programmatically */
+  overflow-y: hidden; /* Hide scrollbar */
+  min-height: 60px; /* Set a minimum height */
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s, height 0.2s ease;
+}
+
+.animated-textarea:focus {
+  outline: none;
+  border-color: #5c4433;
+  box-shadow: 0 0 0 2px rgba(92, 68, 51, 0.2);
+}
+
+.placeholder-text {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-family: 'Merriweather', serif;
+  font-size: 16px;
+  color: #8b6b4c;
+  opacity: 0.7;
+  pointer-events: none;
+  max-width: calc(100% - 2rem);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cursor-blink {
+  display: inline-block;
+  width: 2px;
+  height: 20px;
+  background-color: #5c4433;
+  margin-left: 2px;
+  animation: blink 1s infinite;
+  vertical-align: middle;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .animated-textarea,
+  .placeholder-text {
+    font-size: 14px;
+  }
+}
