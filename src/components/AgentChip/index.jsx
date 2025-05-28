@@ -1,5 +1,5 @@
 import React from 'react';
-import './AgentChip.css';
+import './styles.css';
 
 const AgentChip = ({ name }) => {
   return (

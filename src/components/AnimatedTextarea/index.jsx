@@ -1,28 +1,34 @@
 import { useState, useEffect, useRef } from 'react';
-import './AnimatedTextarea.css';
+import './styles.css';
 
-const AnimatedTextarea = ({ 
-  onChange, 
-  value, 
-  className = '', 
-  rows = 5,
-  disabled = false,
-  onSubmit = () => {}
-}) => {
-  const placeholders = [
-    'Give me a debate between Alex Epstein and Greta Thunberg on net-zero energy',
-    'Show me talking points on climate change from both liberal and conservative perspectives',
-    'Provide key arguments for and against nuclear energy',
-    'What are the main points in the debate about universal healthcare?',
-    'Give me talking points on artificial intelligence regulation'
-  ];
 
+const placeholders = [
+  'Give me a debate between Alex Epstein and Greta Thunberg on net-zero energy',
+  'Show me talking points on climate change from both liberal and conservative perspectives',
+  'Provide key arguments for and against nuclear energy',
+  'What are the main points in the debate about universal healthcare?',
+  'Give me talking points on artificial intelligence regulation'
+];
+
+
+const AnimatedTextarea = () => {
+  const [value, setValue] = useState('');
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isTyping, setIsTyping] = useState(true);
   const [currentPlaceholder, setCurrentPlaceholder] = useState(placeholders[0]);
   const [isFocused, setIsFocused] = useState(false);
   const textareaRef = useRef(null);
+
+  const handleTextChange = (e) => {
+    setValue(e.target.value);
+  };
+  
+  const onSubmit = (text) => {
+    alert('Processing request: ' + text);
+    setValue('');
+  };
+
   
   // Auto resize the textarea based on content
   const adjustHeight = () => {
@@ -123,11 +129,10 @@ const AnimatedTextarea = ({
       <textarea
         ref={textareaRef}
         value={value}
-        onChange={onChange}
-        className={`animated-textarea ${className}`}
-        rows={rows}
+        onChange={handleTextChange}
+        className="animated-textarea"
+        rows={5}
         placeholder=""
-        disabled={disabled}
         onFocus={handleFocus}
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
