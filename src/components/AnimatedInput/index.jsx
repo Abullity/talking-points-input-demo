@@ -4,14 +4,18 @@ import useDebounce from '../../hooks/useDebounce';
 import { agents } from '../../config';
 import './styles.css';
 
+// Import utility functions
+import { detectAndReplaceAgentNames } from './utils/agentUtils';
+import { handleBackspaceKey, handleEnterKey } from './utils/keyboardUtils';
 
-const AnimatedInput = () => {  
+
+const AnimatedInput = () => {
   const [value, setValue] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const divRef = useRef(null);
   const debounce = useDebounce(500); // Use our custom hook with 500ms delay
   const { displayText, resetAnimation, isAnimating } = useAnimatedPlaceholder({ 
-    isInputEmpty: !value || value.trim() === '', 
+    isInputEmpty: !value || value.trim() === '',
     isFocused 
   });
 
@@ -30,76 +34,16 @@ const AnimatedInput = () => {
       setValue(text);
       
       // Debounce the detection and replacement of agent names
-      debounce(() => detectAndReplaceAgentNames());
-    }
-  };
-  
-  // Function to detect agent names in text and convert them to chips
-  const detectAndReplaceAgentNames = () => {
-    console.log('Checking for agent names...');
-    if (!divRef.current) return;
-    
-    const content = divRef.current.innerHTML;
-    const textNodes = [];
-    
-    // Find all text nodes in the div
-    const findTextNodes = (node) => {
-      if (node.nodeType === 3) { // Text node
-        textNodes.push(node);
-      } else if (node.nodeType === 1 && node.nodeName !== 'SPAN') { // Element node but not a span
-        Array.from(node.childNodes).forEach(findTextNodes);
-      }
-    };
-    
-    findTextNodes(divRef.current);
-    
-    // Process each text node
-    textNodes.forEach(textNode => {
-      const text = textNode.nodeValue;
-      
-      // Check for agent names in the text
-      Object.values(agents).forEach(agent => {
-        const regex = new RegExp(`\\b${agent.name}\\b`, 'i'); // Case insensitive search with word boundaries
-        if (regex.test(text)) {
-          // Create range to replace the text
-          const range = document.createRange();
-          const startOffset = text.toLowerCase().indexOf(agent.name.toLowerCase());
-          range.setStart(textNode, startOffset);
-          range.setEnd(textNode, startOffset + agent.name.length);
-          
-          // Create the agent chip element
-          const span = document.createElement('span');
-          span.setAttribute('contenteditable', 'false');
-          span.setAttribute('class', 'agent-chip-container');
-          span.innerHTML = `<span class="agent-chip"><span class="agent-label">Agent</span><span class="agent-name">${name}</span></span>`;
-          
-          // Replace the text with the agent chip
-          range.deleteContents();
-          range.insertNode(span);
-          
-          // Add a space after the chip if there isn't one
-          const nextNode = span.nextSibling;
-          if (!nextNode || (nextNode.nodeType === 3 && !nextNode.nodeValue.startsWith(' '))) {
-            const space = document.createTextNode(' ');
-            span.parentNode.insertBefore(space, span.nextSibling);
-          }
-          
-          // Position cursor after the chip
-          const selection = window.getSelection();
-          const newRange = document.createRange();
-          newRange.setStartAfter(span);
-          newRange.setEndAfter(span);
-          selection.removeAllRanges();
-          selection.addRange(newRange);
-        }
+      debounce(() => {
+        console.log('Checking for agent names...');
+        detectAndReplaceAgentNames(divRef.current, agents, setValue);
       });
-    });
+    }
   };
 
   // Focus handler to hide placeholder
   const handleFocus = () => {
     setIsFocused(true);
-    // No need for select() on div, but we could implement selection via Range API if needed
   };
 
   // Blur handler to show placeholder when div loses focus and is empty
@@ -115,53 +59,13 @@ const AnimatedInput = () => {
   const handleKeyDown = (e) => {
     // Check for a backspace to handle chips deletion
     if (e.key === 'Backspace') {
-      const selection = window.getSelection();
-      const range = selection.getRangeAt(0);
-      
-      // Get the element before the cursor
-      const node = selection.anchorNode;
-      if (!node) return;
-      
-      // Check if we're at the beginning of a text node right after a chip
-      if (node.nodeType === 3 && selection.anchorOffset === 0) {
-        const previousSibling = node.previousSibling;
-        if (previousSibling && previousSibling.classList && previousSibling.classList.contains('agent-chip-container')) {
-          e.preventDefault();
-          previousSibling.remove();
-          return;
-        }
-      }
-      
-      // Check if the current element or parent is the chip container
-      let chipElement = null;
-      if (node.nodeType === 1 && node.classList && node.classList.contains('agent-chip-container')) {
-        chipElement = node;
-      } else if (node.parentNode && node.parentNode.classList && node.parentNode.classList.contains('agent-chip-container')) {
-        chipElement = node.parentNode;
-      } else if (node.parentNode && node.parentNode.parentNode && 
-                node.parentNode.parentNode.classList && 
-                node.parentNode.parentNode.classList.contains('agent-chip-container')) {
-        chipElement = node.parentNode.parentNode;
-      }
-      
-      if (chipElement) {
-        e.preventDefault();
-        chipElement.remove();
+      if (handleBackspaceKey(e)) {
         return;
       }
     }
     
     if (e.key === 'Enter') {
-      if (e.shiftKey) {
-        // Shift+Enter adds a newline - let default behavior happen
-        return;
-      } else {
-        // Just Enter submits the form
-        e.preventDefault();
-        if (value.trim()) {
-          onSubmit(value);
-        }
-      }
+      handleEnterKey(e, value, onSubmit);
     }
   };
 
@@ -188,7 +92,7 @@ const AnimatedInput = () => {
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
       />
-      {isAnimating && (
+      { isAnimating && (
         <div className="placeholder-text">
           {displayText}
           <span className="cursor-blink"></span>

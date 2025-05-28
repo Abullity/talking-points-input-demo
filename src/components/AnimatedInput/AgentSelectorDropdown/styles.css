@@ -1,0 +1,68 @@
+.agent-selector-dropdown {
+  position: absolute;
+  width: 250px;
+  max-height: 300px;
+  background: #fff;
+  border: 1px solid #d9c9ba;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  overflow: hidden;
+  font-family: 'Merriweather', serif;
+  color: #5e4c3e;
+}
+
+.dropdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background: #f8f3ed;
+  border-bottom: 1px solid #e9dfd6;
+}
+
+.dropdown-title {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.dropdown-close {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #8c7b6b;
+  padding: 0;
+  line-height: 1;
+}
+
+.agent-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.agent-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.agent-item:hover {
+  background-color: #f8f3ed;
+}
+
+.agent-name {
+  display: block;
+  font-size: 14px;
+}
+
+.no-results {
+  padding: 15px;
+  text-align: center;
+  color: #8c7b6b;
+  font-style: italic;
+  font-size: 14px;
+}
