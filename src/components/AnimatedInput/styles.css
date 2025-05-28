@@ -5,6 +5,16 @@
   margin: 1.5rem 0;
 }
 
+/* Agent Chip Container Styles */
+.agent-chip-container {
+  display: inline-block;
+  user-select: all;
+  cursor: pointer;
+  position: relative;
+  margin: 0 2px;
+  vertical-align: middle;
+}
+
 .input {
   width: 100%;
   padding: 1rem;
