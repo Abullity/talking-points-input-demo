@@ -7,6 +7,10 @@ import './styles.css';
 // Import utility functions
 import { detectAndReplaceAgentNames } from './utils/agentUtils';
 import { handleBackspaceKey, handleEnterKey } from './utils/keyboardUtils';
+import { checkForAtSign, getFilteredAgents, closeAgentSelector as closeSelector } from './utils/selectorUtils';
+import { handleKeyboardNavigation } from './utils/navigationUtils';
+import { insertAgentChip as insertChip } from './utils/chipInsertionUtils';
+import AgentSelectorDropdown from './AgentSelectorDropdown';
 
 
 const AnimatedInput = () => {
@@ -18,6 +22,13 @@ const AnimatedInput = () => {
     isInputEmpty: !value || value.trim() === '',
     isFocused 
   });
+  
+  // Agent selector dropdown state
+  const [showAgentSelector, setShowAgentSelector] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+  const [filterText, setFilterText] = useState('');
+  const [atSignPosition, setAtSignPosition] = useState(null);
+  const [selectedAgentIndex, setSelectedAgentIndex] = useState(0); // Track highlighted agent index
 
   const onSubmit = (text) => {
     alert(text);
@@ -27,11 +38,32 @@ const AnimatedInput = () => {
     }
   };
   
+  // Wrapper functions that use the utility functions with our specific state setters
+  const insertAgentChip = (agent) => {
+    insertChip(agent, divRef.current, atSignPosition, setValue, () => {
+      closeSelector(setShowAgentSelector, setFilterText, setAtSignPosition, setSelectedAgentIndex);
+    });
+  };
+  
+  const closeAgentSelector = () => {
+    closeSelector(setShowAgentSelector, setFilterText, setAtSignPosition, setSelectedAgentIndex);
+  };
+  
   // Handle content changes
   const handleInput = () => {
     if (divRef.current) {
       const text = divRef.current.innerText.trim();
       setValue(text);
+      
+      // Check for @ character and update the dropdown
+      checkForAtSign(
+        divRef.current,
+        setShowAgentSelector,
+        setDropdownPosition,
+        setAtSignPosition,
+        setFilterText,
+        setSelectedAgentIndex
+      );
       
       // Debounce the detection and replacement of agent names
       debounce(() => {
@@ -64,9 +96,25 @@ const AnimatedInput = () => {
       }
     }
     
-    if (e.key === 'Enter') {
-      handleEnterKey(e, value, onSubmit);
-    }
+    // Get filtered agents list for navigation
+    const filteredAgentsList = getFilteredAgents(agents, filterText);
+    
+    // Handle keyboard navigation for agent selector
+    const handled = handleKeyboardNavigation(
+      e,
+      showAgentSelector,
+      filteredAgentsList,
+      selectedAgentIndex,
+      setSelectedAgentIndex,
+      insertAgentChip,
+      closeAgentSelector,
+      handleEnterKey,
+      value,
+      onSubmit
+    );
+    
+    // If the event was handled by navigation utils, stop processing
+    if (handled) return;
   };
 
   // Update div content when value changes (useful for clearing after submit)
@@ -98,6 +146,16 @@ const AnimatedInput = () => {
           <span className="cursor-blink"></span>
         </div>
       )}
+      
+      {/* Agent Selector Dropdown */}
+      <AgentSelectorDropdown
+        isVisible={showAgentSelector}
+        position={dropdownPosition}
+        onSelectAgent={insertAgentChip}
+        onClose={closeAgentSelector}
+        filterText={filterText}
+        selectedIndex={selectedAgentIndex}
+      />
     </div>
   );
 };

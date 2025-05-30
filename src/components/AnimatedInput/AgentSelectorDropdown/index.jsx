@@ -7,7 +7,8 @@ const AgentSelectorDropdown = ({
   position, 
   onSelectAgent, 
   onClose, 
-  filterText = '' 
+  filterText = '',
+  selectedIndex = 0
 }) => {
   const dropdownRef = useRef(null);
   
@@ -53,10 +54,10 @@ const AgentSelectorDropdown = ({
       
       {filteredAgents.length > 0 ? (
         <ul className="agent-list">
-          {filteredAgents.map(agent => (
+          {filteredAgents.map((agent, index) => (
             <li 
               key={agent.id} 
-              className="agent-item"
+              className={`agent-item ${index === selectedIndex ? 'selected' : ''}`}
               onClick={() => onSelectAgent(agent)}
             >
               <span className="agent-name">{agent.name}</span>

@@ -54,6 +54,22 @@
   background-color: #f8f3ed;
 }
 
+.agent-item.selected {
+  background-color: #e9dfd6;
+  font-weight: 500;
+  position: relative;
+}
+
+.agent-item.selected::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 3px;
+  background-color: #8c7b6b;
+}
+
 .agent-name {
   display: block;
   font-size: 14px;
