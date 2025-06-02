@@ -1,0 +1,71 @@
+.exchanges-chip-container {
+  position: relative;
+  display: inline-block;
+  margin-left: 10px;
+}
+
+.exchanges-chip {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: rgba(139, 107, 76, 0.1);
+  border: 1px solid #8b6b4c;
+  border-radius: 8px;
+  padding: 4px 8px;
+  margin: 4px 2px 0;
+  font-family: 'Merriweather', serif;
+  white-space: nowrap;
+  position: relative;
+  cursor: pointer;
+}
+
+.exchanges-chip:hover {
+  background-color: rgba(139, 107, 76, 0.2);
+}
+
+.exchanges-value {
+  color: #3c2415;
+  font-weight: 500;
+  padding: 0 4px;
+}
+
+.exchanges-label {
+  color: #8b6b4c;
+  font-size: 12px;
+  margin-right: 4px;
+  font-weight: 600;
+}
+
+.exchanges-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  background-color: white;
+  border: 1px solid #8b6b4c;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(60, 36, 21, 0.2);
+  z-index: 100;
+  max-height: 200px;
+  overflow-y: auto;
+  width: max-content;
+  min-width: 100%;
+}
+
+.exchange-option {
+  padding: 8px 12px;
+  color: #3c2415;
+  font-family: 'Merriweather', serif;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-align: center;
+}
+
+.exchange-option:hover {
+  background-color: rgba(139, 107, 76, 0.1);
+}
+
+.exchange-option.selected {
+  background-color: rgba(139, 107, 76, 0.2);
+  font-weight: 500;
+}
