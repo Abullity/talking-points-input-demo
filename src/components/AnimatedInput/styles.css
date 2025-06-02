@@ -15,7 +15,7 @@
   background-color: rgba(255, 255, 255, 0.8);
   box-sizing: border-box;
   transition: border-color 0.3s, box-shadow 0.3s;
-  overflow: hidden;
+  /* Remove overflow: hidden to allow dropdowns to be visible */
 }
 
 .input-wrapper:focus-within {

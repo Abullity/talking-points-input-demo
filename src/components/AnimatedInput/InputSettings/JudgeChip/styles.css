@@ -44,7 +44,7 @@
   border: 1px solid #8b6b4c;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(60, 36, 21, 0.2);
-  z-index: 100;
+  z-index: 1000;
   max-height: 200px;
   overflow-y: auto;
   width: max-content;
