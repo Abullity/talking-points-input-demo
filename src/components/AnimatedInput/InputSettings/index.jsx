@@ -3,11 +3,16 @@ import './styles.css';
 import JudgeChip from './JudgeChip';
 import ExchangesChip from './ExchangesChip';
 
+const InputSettings = ({ mode, onJudgeChange }) => {
+  const handleJudgeChange = (selectedJudge) => {
+    if (onJudgeChange) {
+      onJudgeChange(selectedJudge);
+    }
+  };
 
-const InputSettings = ({ mode }) => {
   return (
     <div className="input-settings">
-      <JudgeChip />
+      <JudgeChip onChange={handleJudgeChange} />
       <ExchangesChip />
     </div>
   );

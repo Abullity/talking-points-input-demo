@@ -3,6 +3,7 @@ import useAnimatedPlaceholder from '../../hooks/useAnimatedPlaceholder';
 import useDebounce from '../../hooks/useDebounce';
 import { agents } from '../../config';
 import './styles.css';
+import InputSettings from './InputSettings';
 
 // Import utility functions
 import { detectAndReplaceAgentNames } from './utils/agentUtils';
@@ -167,6 +168,7 @@ const AnimatedInput = () => {
         filterText={filterText}
         selectedIndex={selectedAgentIndex}
       />
+      <InputSettings mode={mode} />
     </div>
   );
 };
