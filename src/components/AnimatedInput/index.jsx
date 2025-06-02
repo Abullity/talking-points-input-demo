@@ -16,6 +16,7 @@ import AgentSelectorDropdown from './AgentSelectorDropdown';
 const AnimatedInput = () => {
   const [value, setValue] = useState('');
   const [isFocused, setIsFocused] = useState(false);
+  const [mode, setMode] = useState(null); // Can be 'debate' or 'talking-points' or null
   const divRef = useRef(null);
   const debounce = useDebounce(500); // Use our custom hook with 500ms delay
   const { displayText, resetAnimation, isAnimating } = useAnimatedPlaceholder({ 
@@ -31,8 +32,10 @@ const AnimatedInput = () => {
   const [selectedAgentIndex, setSelectedAgentIndex] = useState(0); // Track highlighted agent index
 
   const onSubmit = (text) => {
-    alert(text);
+    // Add the mode and settings information to the alert for demonstration purposes
+    alert(`Mode: ${mode || 'none'}, Text: ${text}`);
     setValue('');
+    setMode(null); // Reset mode after submission
     if (divRef.current) {
       divRef.current.innerHTML = '';
     }
@@ -54,6 +57,14 @@ const AnimatedInput = () => {
     if (divRef.current) {
       const text = divRef.current.innerText.trim();
       setValue(text);
+      
+      // Detect the mode based on keywords in the text
+      const lowerCaseText = text.toLowerCase();
+      if (lowerCaseText.includes('debate')) {
+        setMode('debate');
+      } else if (lowerCaseText.includes('talking-points') || lowerCaseText.includes('talking points')) {
+        setMode('talking-points');
+      }
       
       // Check for @ character and update the dropdown
       checkForAtSign(
