@@ -5,7 +5,7 @@ import './styles.css';
 const agentsList = Object.values(agents);
 
 const JudgeChip = ({ onChange }) => {
-  const [judge, setJudge] = useState(agentsList[0]);
+  const [judge, setJudge] = useState(agentsList.find(agent => agent.id === 'gemini-2.5-flash'));
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
 

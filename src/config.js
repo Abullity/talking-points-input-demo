@@ -24,5 +24,8 @@ export const agents = {
   "greta-thunberg": { id: 'greta-thunberg', name: 'Greta Thunberg' },
   "elon-musk": { id: 'elon-musk', name: 'Elon Musk' },
   "alex-epstein": { id: 'alex-epstein', name: 'Alex Epstein' },
-  "joe-biden": { id: 'joe-biden', name: 'Joe Biden' }
+  "joe-biden": { id: 'joe-biden', name: 'Joe Biden' },
+  "gpt-4o": { id: 'gpt-4o', name: 'GPT-4o' },
+  "claude-3-5-sonnet": { id: 'claude-3-5-sonnet', name: 'Claude 3.5 Sonnet' },
+  "gemini-2.5-flash": { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash' }
 };

@@ -65,6 +65,8 @@ const AnimatedInput = () => {
         setMode('debate');
       } else if (lowerCaseText.includes('talking-points') || lowerCaseText.includes('talking points')) {
         setMode('talking-points');
+      } else {
+        setMode(null);
       }
       
       // Check for @ character and update the dropdown
@@ -143,21 +145,24 @@ const AnimatedInput = () => {
   
   return (
     <div className="input-container">
-      <div
-        ref={divRef}
-        className="input"
-        contentEditable
-        onInput={handleInput}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        onKeyDown={handleKeyDown}
-      />
-      { isAnimating && (
-        <div className="placeholder-text">
-          {displayText}
-          <span className="cursor-blink"></span>
-        </div>
-      )}
+      <div className="input-wrapper">
+        <div
+          ref={divRef}
+          className="input"
+          contentEditable
+          onInput={handleInput}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          onKeyDown={handleKeyDown}
+        />
+        { isAnimating && (
+          <div className="placeholder-text">
+            {displayText}
+            <span className="cursor-blink"></span>
+          </div>
+        )}
+        <InputSettings mode={mode} />
+      </div>
       
       {/* Agent Selector Dropdown */}
       <AgentSelectorDropdown
@@ -168,7 +173,6 @@ const AnimatedInput = () => {
         filterText={filterText}
         selectedIndex={selectedAgentIndex}
       />
-      <InputSettings mode={mode} />
     </div>
   );
 };

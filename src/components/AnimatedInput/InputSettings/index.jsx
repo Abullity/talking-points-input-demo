@@ -16,10 +16,16 @@ const InputSettings = ({ mode, onJudgeChange, onExchangesChange }) => {
     }
   };
 
+  if (mode !== 'debate') {
+    return null;
+  }
+
   return (
-    <div className="input-settings">
-      <JudgeChip onChange={handleJudgeChange} />
-      <ExchangesChip onChange={handleExchangesChange} />
+    <div className="input-bottom-settings">
+      <div className="input-settings">
+        <JudgeChip onChange={handleJudgeChange} />
+        <ExchangesChip onChange={handleExchangesChange} />
+      </div>
     </div>
   );
 };

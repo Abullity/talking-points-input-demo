@@ -5,6 +5,25 @@
   margin: 1.5rem 0;
 }
 
+.input-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 2px solid #8b6b4c;
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.8);
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  overflow: hidden;
+}
+
+.input-wrapper:focus-within {
+  outline: none;
+  border-color: #5c4433;
+  box-shadow: 0 0 0 2px rgba(92, 68, 51, 0.2);
+}
+
 /* Agent Chip Container Styles */
 .agent-chip-container {
   display: inline-block;
@@ -21,14 +40,12 @@
   font-family: 'Merriweather', serif;
   font-size: 16px;
   color: #3c2415;
-  border: 2px solid #8b6b4c;
-  border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+  background-color: transparent;
   min-height: 120px; /* Set a minimum height */
   max-height: 300px; /* Set maximum height */
   overflow-y: auto; /* Allow scrolling when content exceeds max height */
   box-sizing: border-box;
-  transition: border-color 0.3s, box-shadow 0.3s;
   white-space: pre-wrap; /* Preserve line breaks */
   word-break: break-word; /* Break words when necessary */
   line-height: 1.5; /* Improve readability */
@@ -36,8 +53,6 @@
 
 .input:focus {
   outline: none;
-  border-color: #5c4433;
-  box-shadow: 0 0 0 2px rgba(92, 68, 51, 0.2);
 }
 
 .placeholder-text {
